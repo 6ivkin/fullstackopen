@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant user as Пользователь
+    participant browser as Браузер
+    participant server as Сервер
+
+    note over user,browser: Пользователь вводит текст и жмёт "Сохранить"
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    note right of server: Сервер обрабатывает данные<br/>и сохраняет новую заметку<br/>затем возвращает редирект (302) на /notes
+    server-->>browser: HTTP 302 Redirect to /notes
+    deactivate server
+
+    browser->>server: GET /notes
+    activate server
+    server-->>browser: HTML-документ
+    deactivate server
+
+    browser->>server: GET /main.css
+    activate server
+    server-->>browser: CSS файл
+    deactivate server
+
+    browser->>server: GET /main.js
+    activate server
+    server-->>browser: JavaScript файл
+    deactivate server
+
+    note right of browser: JS-код в браузере запрашивает JSON со списком заметок
+
+    browser->>server: GET /data.json
+    activate server
+    server-->>browser: Возвращает массив заметок (включая новую)
+    deactivate server
+
+    note right of browser: Браузер вызывает callback<br/>и перерисовывает список заметок
