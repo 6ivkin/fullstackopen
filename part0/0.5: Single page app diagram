@@ -1,0 +1,31 @@
+sequenceDiagram
+    participant user as Пользователь
+    participant browser as Браузер
+    participant server as Сервер
+
+    user->>browser: Открыть страницу /spa
+    note over user,browser: Пользователь набирает /spa<br/>или кликает ссылку
+
+    browser->>server: GET /exampleapp/spa
+    activate server
+    server-->>browser: HTML-файл (spa)
+    deactivate server
+
+    browser->>server: GET /exampleapp/main.css
+    activate server
+    server-->>browser: CSS файл
+    deactivate server
+
+    browser->>server: GET /exampleapp/spa.js
+    activate server
+    server-->>browser: JavaScript код (spa.js)
+    deactivate server
+
+    note right of browser: JS-код запускается,<br/>запрашивает список заметок
+
+    browser->>server: GET /exampleapp/data.json
+    activate server
+    server-->>browser: JSON c данными заметок
+    deactivate server
+
+    note right of browser: Браузер строит UI<br/>(отображает заметки) без<br/>перезагрузки всей страницы
